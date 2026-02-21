@@ -54,18 +54,26 @@ interface ExcerptReaderProps {
 
 export default function ExcerptReader({ open, onClose }: ExcerptReaderProps) {
   const [visible, setVisible] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const [progress, setProgress] = useState(0);
   const panelRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Open animation
+  // Mount/unmount with animation
   useEffect(() => {
     if (open) {
+      setMounted(true);
       document.body.style.overflow = "hidden";
-      requestAnimationFrame(() => setVisible(true));
-    } else {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => setVisible(true));
+      });
+    } else if (mounted) {
       setVisible(false);
-      document.body.style.overflow = "";
+      const timer = setTimeout(() => {
+        setMounted(false);
+        document.body.style.overflow = "";
+      }, 500); // match longest animation duration
+      return () => clearTimeout(timer);
     }
     return () => {
       document.body.style.overflow = "";
@@ -74,13 +82,13 @@ export default function ExcerptReader({ open, onClose }: ExcerptReaderProps) {
 
   // Escape key
   useEffect(() => {
-    if (!open) return;
+    if (!mounted) return;
     const handler = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [open, onClose]);
+  }, [mounted, onClose]);
 
   // Scroll progress
   const handleScroll = useCallback(() => {
@@ -91,7 +99,7 @@ export default function ExcerptReader({ open, onClose }: ExcerptReaderProps) {
     setProgress(Math.min(el.scrollTop / scrollable, 1));
   }, []);
 
-  if (!open) return null;
+  if (!mounted) return null;
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center">
