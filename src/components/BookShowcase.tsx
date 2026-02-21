@@ -57,7 +57,7 @@ export default function BookShowcase() {
       >
         {/* Status badge */}
         <div
-          className={`absolute top-6 right-6 font-body text-[0.6rem] font-medium tracking-[0.2em] uppercase px-3 py-1.5 rounded-sm border ${
+          className={`sm:absolute sm:top-6 sm:right-6 inline-block font-body text-[0.6rem] font-medium tracking-[0.2em] uppercase px-3 py-1.5 rounded-sm border mb-4 sm:mb-0 ${
             book.isTeaser
               ? "text-body-muted border-body-muted/20"
               : "text-primary border-primary/20"
