@@ -1,12 +1,12 @@
 [
   {
-    "filename": "field_notes_midwest_q3.pdf",
+    "filename": "field_notes_midwest_q3.txt",
     "title": "Field Notes — Midwest Corridor",
     "date": "2024-09-14",
     "size": "4.2 KB",
-    "type": "pdf",
+    "type": "text",
     "classified": false,
-    "description": "Three counties. Same pattern. Independent seed suppliers shut out of regional contracts."
+    "description": "Three counties. Same pattern. Independent seed suppliers shut out of regional contracts within 18 months of the new certification requirements."
   },
   {
     "filename": "timeline_draft_v4.txt",
@@ -15,7 +15,7 @@
     "size": "1.8 KB",
     "type": "text",
     "classified": false,
-    "description": "Chronological mapping of market consolidation from 1996 to present."
+    "description": "A chronological record of the consolidation. Note the gap at 2014. Three FOIA requests returned fully redacted documents."
   },
   {
     "filename": "README.txt",
