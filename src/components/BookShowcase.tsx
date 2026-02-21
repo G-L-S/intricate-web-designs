@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Section from "./Section";
+import ExcerptReader from "./ExcerptReader";
 
 const BOOKS = {
   harvest: {
@@ -24,6 +25,7 @@ type BookKey = keyof typeof BOOKS;
 
 export default function BookShowcase() {
   const [active, setActive] = useState<BookKey>("harvest");
+  const [excerptOpen, setExcerptOpen] = useState(false);
   const book = BOOKS[active];
 
   return (
@@ -116,7 +118,10 @@ export default function BookShowcase() {
         {/* CTAs */}
         {!book.isTeaser && (
           <div className="mt-10 flex gap-4 flex-wrap">
-            <button className="bg-primary/10 border border-primary/30 rounded-sm px-8 py-3.5 font-body text-[0.7rem] font-medium text-primary tracking-[0.18em] uppercase cursor-pointer transition-all duration-300 hover:bg-primary/[0.18]">
+            <button
+              onClick={() => setExcerptOpen(true)}
+              className="bg-primary/10 border border-primary/30 rounded-sm px-8 py-3.5 font-body text-[0.7rem] font-medium text-primary tracking-[0.18em] uppercase cursor-pointer transition-all duration-300 hover:bg-primary/[0.18]"
+            >
               Read an Excerpt
             </button>
             <button className="bg-transparent border border-body-muted/20 rounded-sm px-8 py-3.5 font-body text-[0.7rem] font-normal text-body-muted tracking-[0.18em] uppercase cursor-pointer transition-colors duration-300 hover:text-foreground">
@@ -131,6 +136,7 @@ export default function BookShowcase() {
           </p>
         )}
       </div>
+      <ExcerptReader open={excerptOpen} onClose={() => setExcerptOpen(false)} />
     </Section>
   );
 }
