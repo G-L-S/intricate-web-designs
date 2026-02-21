@@ -155,7 +155,7 @@ export default function ExcerptReader({ open, onClose }: ExcerptReaderProps) {
         <div
           ref={scrollRef}
           onScroll={handleScroll}
-          className="overflow-y-auto flex-1"
+          className="overflow-y-auto flex-1 excerpt-scroll"
           style={{
             backgroundColor: "#f2ece0",
             borderRadius: "2px",
@@ -167,7 +167,7 @@ export default function ExcerptReader({ open, onClose }: ExcerptReaderProps) {
             .excerpt-scroll::-webkit-scrollbar { display: none; }
           `}</style>
           <div
-            className="excerpt-scroll px-8 sm:px-14 py-14 sm:py-20"
+            className="px-8 sm:px-14 py-14 sm:py-20"
           >
             {EXCERPT.map((block, i) => {
               if (block.type === "heading") {
