@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import SizzleReel from "@/components/SizzleReel";
 import NavBar from "@/components/NavBar";
 import Hero from "@/components/Hero";
@@ -9,20 +9,31 @@ import Contact from "@/components/Contact";
 import SiteFooter from "@/components/SiteFooter";
 import FileDirectory from "@/components/FileDirectory";
 
+type Phase = "intro" | "sizzle" | "main";
+
 const Index = () => {
-  const [sizzleDone, setSizzleDone] = useState(false);
+  const [phase, setPhase] = useState<Phase>("intro");
   const [showFiles, setShowFiles] = useState(false);
+
+  const handleIntroDone = useCallback(() => setPhase("sizzle"), []);
+  const handleSizzleDone = useCallback(() => setPhase("main"), []);
 
   return (
     <>
-      {!sizzleDone && <SizzleReel onComplete={() => setSizzleDone(true)} />}
+      {phase === "intro" && (
+        <Hero introMode onComplete={handleIntroDone} />
+      )}
+
+      {phase === "sizzle" && (
+        <SizzleReel onComplete={handleSizzleDone} />
+      )}
 
       <div
         className={`transition-opacity duration-1000 delay-200 ${
-          sizzleDone ? "opacity-100" : "opacity-0"
+          phase === "main" ? "opacity-100" : "opacity-0 pointer-events-none fixed inset-0"
         }`}
       >
-        <NavBar visible={sizzleDone} />
+        <NavBar visible={phase === "main"} />
         <Hero />
         <Pitch />
         <BookShowcase />
