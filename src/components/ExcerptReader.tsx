@@ -118,7 +118,7 @@ export default function ExcerptReader({ open, onClose }: ExcerptReaderProps) {
       {/* Panel */}
       <div
         ref={panelRef}
-        className="relative z-10 w-[95vw] max-w-[680px] max-h-[88vh] flex flex-col"
+        className="relative z-10 w-[92vw] max-w-[680px] h-[82vh] sm:h-auto sm:max-h-[88vh] flex flex-col"
         style={{
           transition: "opacity 500ms ease-out, transform 500ms ease-out",
           opacity: visible ? 1 : 0,
