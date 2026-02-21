@@ -10,10 +10,10 @@ export default function Contact() {
         For press inquiries, rights, or correspondence.
       </p>
       <a
-        href="mailto:contact@themarchobabylon.com"
+        href="mailto:contact@themarchtobabylon.com"
         className="font-body text-sm font-normal text-primary tracking-[0.08em] no-underline border-b border-primary/30 pb-0.5 transition-colors duration-300 hover:border-primary/60"
       >
-        contact@themarchobabylon.com
+        contact@themarchtobabylon.com
       </a>
     </Section>
   );
