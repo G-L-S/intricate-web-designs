@@ -102,7 +102,10 @@ export default function ExcerptReader({ open, onClose }: ExcerptReaderProps) {
   if (!mounted) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center">
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center"
+      style={{ touchAction: "none" }}
+    >
       {/* Overlay */}
       <div
         onClick={onClose}
@@ -155,12 +158,14 @@ export default function ExcerptReader({ open, onClose }: ExcerptReaderProps) {
         <div
           ref={scrollRef}
           onScroll={handleScroll}
-          className="overflow-y-auto flex-1 excerpt-scroll"
+          className="overflow-y-auto flex-1 excerpt-scroll overscroll-contain"
           style={{
             backgroundColor: "#f2ece0",
             borderRadius: "2px",
             scrollbarWidth: "none",
             msOverflowStyle: "none",
+            WebkitOverflowScrolling: "touch",
+            touchAction: "pan-y",
           }}
         >
           <style>{`
