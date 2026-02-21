@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from "react";
+import { createPortal } from "react-dom";
 
 const EXCERPT = [
   {
@@ -101,7 +102,7 @@ export default function ExcerptReader({ open, onClose }: ExcerptReaderProps) {
 
   if (!mounted) return null;
 
-  return (
+  return createPortal(
     <div
       className="fixed inset-0 z-[100] flex items-center justify-center"
       style={{ touchAction: "none" }}
@@ -241,6 +242,7 @@ export default function ExcerptReader({ open, onClose }: ExcerptReaderProps) {
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
