@@ -1,0 +1,41 @@
+TIMELINE — CONSOLIDATION PATTERN (DRAFT v4)
+=============================================
+
+1996    Seed IP protections expanded under Plant Variety Protection Act amendments.
+        First wave of utility patents on seed genetics.
+
+1998    Monsanto acquires DeKalb Genetics ($2.3B) and Delta & Pine Land.
+        Market share in cotton seed: 12% → 85% in under a decade.
+
+2001    Four firms control 47% of North American seed corn market.
+
+2005    "Technology use agreements" become standard. Farmers sign away right to
+        save seed. Enforcement begins — private investigators in rural counties.
+
+2008    Dow and DuPont begin cross-licensing. Effectively a single product line
+        sold under two names.
+
+2012    Syngenta and Monsanto settle patent dispute. Terms sealed.
+
+2014    [REDACTED — THREE FOIA REQUESTS RETURNED FULLY REDACTED DOCUMENTS]
+        [SEE: FOIA-2024-0041, FOIA-2024-0042, FOIA-2024-0043]
+
+2016    Bayer-Monsanto merger announced. $66B. Largest agricultural acquisition
+        in history.
+
+2018    Four companies now control approximately 60% of global seed sales and
+        75% of agrochemical sales.
+
+2020    COVID supply chain disruptions expose single-source dependencies.
+        Independent suppliers who might have provided alternatives no longer exist.
+
+2023    State-level certification requirements begin appearing. Model legislation
+        traced to industry working group. See: field_notes_midwest_q3.txt
+
+2024    Present day. Three companies. One food system. No alternatives.
+
+Note: The 2014 gap is not an oversight. Something happened that year that
+connected the regulatory framework to the financial architecture. I have the
+documents. They have the redactions.
+
+— G.L.S.
