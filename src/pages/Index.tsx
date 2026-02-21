@@ -1,13 +1,38 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import SizzleReel from "@/components/SizzleReel";
+import NavBar from "@/components/NavBar";
+import Hero from "@/components/Hero";
+import Pitch from "@/components/Pitch";
+import BookShowcase from "@/components/BookShowcase";
+import About from "@/components/About";
+import Contact from "@/components/Contact";
+import SiteFooter from "@/components/SiteFooter";
+import FileDirectory from "@/components/FileDirectory";
 
 const Index = () => {
+  const [sizzleDone, setSizzleDone] = useState(false);
+  const [showFiles, setShowFiles] = useState(false);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+    <>
+      {!sizzleDone && <SizzleReel onComplete={() => setSizzleDone(true)} />}
+
+      <div
+        className={`transition-opacity duration-1000 delay-200 ${
+          sizzleDone ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        <NavBar visible={sizzleDone} />
+        <Hero />
+        <Pitch />
+        <BookShowcase />
+        <About />
+        <Contact />
+        <SiteFooter onEasterEgg={() => setShowFiles(true)} />
       </div>
-    </div>
+
+      {showFiles && <FileDirectory onClose={() => setShowFiles(false)} />}
+    </>
   );
 };
 
