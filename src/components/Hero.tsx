@@ -142,8 +142,7 @@ export default function Hero({ introMode = false, onComplete, skipReveal = false
           className="font-display font-light italic text-body-muted max-w-[500px] mx-auto"
           style={{ fontSize: "clamp(1rem, 2vw, 1.35rem)" }}
         >
-          The books in the middle — where the storm is still deciding what it
-          will destroy.
+          The world hasn't fallen — it's been taken.
         </p>
 
         <div
