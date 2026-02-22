@@ -45,39 +45,39 @@ export default function Hero({ introMode = false, onComplete, skipReveal = false
     const t = (fn: () => void, ms: number) => ids.push(setTimeout(fn, ms));
 
     // Two quick stutters
-    t(() => setGlitch("g1"), 3400);
-    t(() => setGlitch(""), 3480);
-    t(() => setGlitch("g2"), 3600);
-    t(() => setGlitch(""), 3700);
+    t(() => setGlitch("g1"), 1700);
+    t(() => setGlitch(""), 1740);
+    t(() => setGlitch("g2"), 1800);
+    t(() => setGlitch(""), 1850);
 
     // Third stutter
-    t(() => setGlitch("g3"), 3950);
-    t(() => setGlitch(""), 4050);
+    t(() => setGlitch("g3"), 1975);
+    t(() => setGlitch(""), 2025);
 
     // Pause... then one more
-    t(() => setGlitch("g4"), 4550);
-    t(() => setGlitch(""), 4630);
+    t(() => setGlitch("g4"), 2275);
+    t(() => setGlitch(""), 2315);
 
     // Accelerate
-    t(() => setGlitch("g1"), 4750);
-    t(() => setGlitch(""), 4810);
-    t(() => setGlitch("g3"), 4860);
-    t(() => setGlitch(""), 4920);
-    t(() => setGlitch("g2"), 4960);
-    t(() => setGlitch("g4"), 5000);
-    t(() => setGlitch("g1"), 5040);
+    t(() => setGlitch("g1"), 2375);
+    t(() => setGlitch(""), 2405);
+    t(() => setGlitch("g3"), 2430);
+    t(() => setGlitch(""), 2460);
+    t(() => setGlitch("g2"), 2480);
+    t(() => setGlitch("g4"), 2500);
+    t(() => setGlitch("g1"), 2520);
 
     // Dissolve
     t(() => {
       setGlitch("");
       setDissolve(true);
-    }, 5100);
+    }, 2550);
 
     // Complete after dissolution
     t(() => {
       setHidden(true);
       stableOnComplete();
-    }, 5700);
+    }, 3150);
 
     return () => ids.forEach(clearTimeout);
   }, [introMode, stableOnComplete]);
