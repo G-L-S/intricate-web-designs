@@ -91,13 +91,15 @@ export default function SizzleReel({ onComplete }: SizzleReelProps) {
           >
             Babylon's Harvest
           </h1>
-          {phase === 11 && (
-            <p className="font-body text-body-muted font-light tracking-[0.3em] uppercase mt-5 animate-fade-up"
-              style={{ fontSize: "clamp(0.8rem, 1.5vw, 1rem)" }}
-            >
-              G.L. Shephard
-            </p>
-          )}
+          <p className="font-body font-light tracking-[0.3em] uppercase mt-5 transition-opacity duration-700"
+            style={{
+              fontSize: "clamp(0.8rem, 1.5vw, 1rem)",
+              opacity: phase === 11 ? 1 : 0,
+              color: "hsl(var(--body-muted))",
+            }}
+          >
+            G.L. Shephard
+          </p>
         </div>
       )}
 
