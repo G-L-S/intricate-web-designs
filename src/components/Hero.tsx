@@ -129,20 +129,19 @@ export default function Hero({ introMode = false, onComplete, skipReveal = false
           will destroy.
         </p>
 
-        {!isIntro && (
-          <div
-            className="mt-16 flex justify-center"
-            style={{ animation: "pulse-arrow 2.5s ease-in-out infinite" }}
-          >
-            <svg width="20" height="30" viewBox="0 0 20 30" fill="none">
-              <path
-                d="M10 0 L10 24 M3 17 L10 24 L17 17"
-                stroke="hsl(30, 7%, 27%)"
-                strokeWidth="1"
-              />
-            </svg>
-          </div>
-        )}
+        {/* Down arrow — always rendered for consistent centering, hidden in intro */}
+        <div
+          className={`mt-16 flex justify-center ${isIntro ? "invisible" : ""}`}
+          style={{ animation: isIntro ? "none" : "pulse-arrow 2.5s ease-in-out infinite" }}
+        >
+          <svg width="20" height="30" viewBox="0 0 20 30" fill="none">
+            <path
+              d="M10 0 L10 24 M3 17 L10 24 L17 17"
+              stroke="hsl(30, 7%, 27%)"
+              strokeWidth="1"
+            />
+          </svg>
+        </div>
       </div>
     </div>
   );
