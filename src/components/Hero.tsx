@@ -152,7 +152,7 @@ export default function Hero({ introMode = false, onComplete, skipReveal = false
           <svg width="20" height="30" viewBox="0 0 20 30" fill="none">
             <path
               d="M10 0 L10 24 M3 17 L10 24 L17 17"
-              stroke="hsl(30, 7%, 27%)"
+              stroke="hsl(30, 7%, 42%)"
               strokeWidth="1"
             />
           </svg>
