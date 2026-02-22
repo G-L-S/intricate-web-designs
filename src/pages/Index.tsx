@@ -20,21 +20,21 @@ const Index = () => {
 
   return (
     <>
-      {phase === "intro" && (
-        <Hero introMode onComplete={handleIntroDone} />
-      )}
-
       {phase === "sizzle" && (
         <SizzleReel onComplete={handleSizzleDone} />
       )}
 
       <div
         className={`transition-opacity duration-1000 delay-200 ${
-          phase === "main" ? "opacity-100" : "opacity-0 pointer-events-none fixed inset-0"
+          phase === "main" ? "opacity-100" : phase === "intro" ? "opacity-100" : "opacity-0 pointer-events-none fixed inset-0"
         }`}
       >
         <NavBar visible={phase === "main"} />
-        <Hero />
+        <Hero
+          introMode={phase === "intro"}
+          onComplete={handleIntroDone}
+          skipReveal={phase === "main"}
+        />
         <Pitch />
         <BookShowcase />
         <About />
