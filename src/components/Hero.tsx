@@ -131,7 +131,7 @@ export default function Hero({ introMode = false, onComplete, skipReveal = false
 
         {!isIntro && (
           <div
-            className="mt-16"
+            className="mt-16 flex justify-center"
             style={{ animation: "pulse-arrow 2.5s ease-in-out infinite" }}
           >
             <svg width="20" height="30" viewBox="0 0 20 30" fill="none">
