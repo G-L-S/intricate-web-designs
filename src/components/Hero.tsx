@@ -45,43 +45,43 @@ export default function Hero({ introMode = false, onComplete, skipReveal = false
     const ids: ReturnType<typeof setTimeout>[] = [];
     const t = (fn: () => void, ms: number) => ids.push(setTimeout(fn, ms));
 
-    // ~500ms stillness, then two firm knocks
-    t(() => setActiveStyle(SHAKE_STYLES.left), 500);
-    t(() => setActiveStyle({}), 580);
-    t(() => setActiveStyle(SHAKE_STYLES.right), 620);
-    t(() => setActiveStyle({}), 700);
+    // ~750ms stillness, then two firm knocks
+    t(() => setActiveStyle(SHAKE_STYLES.left), 750);
+    t(() => setActiveStyle({}), 830);
+    t(() => setActiveStyle(SHAKE_STYLES.right), 870);
+    t(() => setActiveStyle({}), 950);
 
-    // 200ms pause, then glitch acceleration at ~900ms
-    t(() => setActiveStyle(GLITCH_STYLES.g1), 900);
-    t(() => setActiveStyle({}), 940);
-    t(() => setActiveStyle(GLITCH_STYLES.g2), 1000);
-    t(() => setActiveStyle({}), 1050);
+    // 200ms pause, then glitch acceleration at ~1150ms
+    t(() => setActiveStyle(GLITCH_STYLES.g1), 1150);
+    t(() => setActiveStyle({}), 1190);
+    t(() => setActiveStyle(GLITCH_STYLES.g2), 1250);
+    t(() => setActiveStyle({}), 1300);
 
-    t(() => setActiveStyle(GLITCH_STYLES.g3), 1175);
-    t(() => setActiveStyle({}), 1225);
+    t(() => setActiveStyle(GLITCH_STYLES.g3), 1425);
+    t(() => setActiveStyle({}), 1475);
 
-    t(() => setActiveStyle(GLITCH_STYLES.g4), 1475);
-    t(() => setActiveStyle({}), 1515);
+    t(() => setActiveStyle(GLITCH_STYLES.g4), 1725);
+    t(() => setActiveStyle({}), 1765);
 
     // Accelerate
-    t(() => setActiveStyle(GLITCH_STYLES.g1), 1575);
-    t(() => setActiveStyle({}), 1605);
-    t(() => setActiveStyle(GLITCH_STYLES.g3), 1630);
-    t(() => setActiveStyle({}), 1660);
-    t(() => setActiveStyle(GLITCH_STYLES.g2), 1680);
-    t(() => setActiveStyle(GLITCH_STYLES.g4), 1700);
-    t(() => setActiveStyle(GLITCH_STYLES.g1), 1720);
+    t(() => setActiveStyle(GLITCH_STYLES.g1), 1825);
+    t(() => setActiveStyle({}), 1855);
+    t(() => setActiveStyle(GLITCH_STYLES.g3), 1880);
+    t(() => setActiveStyle({}), 1910);
+    t(() => setActiveStyle(GLITCH_STYLES.g2), 1930);
+    t(() => setActiveStyle(GLITCH_STYLES.g4), 1950);
+    t(() => setActiveStyle(GLITCH_STYLES.g1), 1970);
 
     // Dissolve
     t(() => {
       setActiveStyle({});
       setDissolve(true);
-    }, 1750);
+    }, 2000);
 
     t(() => {
       setHidden(true);
       stableOnComplete();
-    }, 2350);
+    }, 2600);
 
     return () => ids.forEach(clearTimeout);
   }, [introMode, stableOnComplete]);
