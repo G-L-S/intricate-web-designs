@@ -35,6 +35,7 @@ export default function Hero({ introMode = false, onComplete, skipReveal = false
   const [glitch, setGlitch] = useState("");
   const [dissolve, setDissolve] = useState(false);
   const [hidden, setHidden] = useState(false);
+  const [ghostOffset, setGhostOffset] = useState<number | null>(null);
 
   const stableOnComplete = useCallback(() => onComplete?.(), [onComplete]);
 
@@ -44,15 +45,21 @@ export default function Hero({ introMode = false, onComplete, skipReveal = false
     const ids: ReturnType<typeof setTimeout>[] = [];
     const t = (fn: () => void, ms: number) => ids.push(setTimeout(fn, ms));
 
-    // First knock
+    // First knock — no ghost
     t(() => setGlitch("s1"), 750);
     t(() => setGlitch("s2"), 830);
     t(() => setGlitch(""),   910);
 
-    // Second knock
-    t(() => setGlitch("s3"), 1090);
-    t(() => setGlitch("s4"), 1170);
-    t(() => setGlitch(""),   1250);
+    // Second knock — ghost burns in at s3 position (-9px), then real text snaps right
+    t(() => {
+      setGlitch("s3");
+      setGhostOffset(-9);   // ghost appears, frozen at left
+    }, 1090);
+    t(() => setGlitch("s4"), 1170);  // real text snaps right, ghost stays left
+    t(() => {
+      setGlitch("");
+      setGhostOffset(null); // ghost disappears
+    }, 1350);
 
     // Glitch dissolution
     t(() => setGlitch("g1"), 1600);
@@ -90,6 +97,11 @@ export default function Hero({ introMode = false, onComplete, skipReveal = false
   const showRevealAnim = !isIntro && !skipReveal;
   const activeStyle = glitch ? (ALL_STYLES[glitch] ?? {}) : {};
 
+  const ghostShadow =
+    ghostOffset !== null
+      ? `${ghostOffset}px 0 0 hsl(37 22% 87% / 0.3)`
+      : undefined;
+
   return (
     <div
       ref={showRevealAnim ? (revealRef as React.RefObject<HTMLDivElement>) : undefined}
@@ -115,7 +127,11 @@ export default function Hero({ introMode = false, onComplete, skipReveal = false
 
         <h1
           className="font-display font-light text-foreground tracking-[0.06em] uppercase m-0"
-          style={{ fontSize: "clamp(3rem, 8vw, 7rem)", lineHeight: 0.95 }}
+          style={{
+            fontSize: "clamp(3rem, 8vw, 7rem)",
+            lineHeight: 0.95,
+            textShadow: ghostShadow,
+          }}
         >
           G.L.
           <br />
