@@ -119,7 +119,7 @@ export default function Hero({ introMode = false, onComplete, skipReveal = false
           Shephard
         </h1>
 
-        <div className="w-10 h-px bg-primary my-10" />
+        
 
         <p
           className="font-display font-light italic text-body-muted max-w-[500px] mx-auto"
