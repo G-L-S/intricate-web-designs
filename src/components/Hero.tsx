@@ -7,14 +7,11 @@ interface HeroProps {
   skipReveal?: boolean;
 }
 
-const SHAKE_STYLES: Record<string, React.CSSProperties> = {
+const ALL_STYLES: Record<string, React.CSSProperties> = {
   s1: { transform: "translateX(-10px)" },
   s2: { transform: "translateX(10px)" },
   s3: { transform: "translateX(-9px)" },
   s4: { transform: "translateX(9px)" },
-};
-
-const GLITCH_STYLES: Record<string, React.CSSProperties> = {
   g1: {
     transform: "translateX(4px)",
     textShadow: "-3px 0 hsl(0 100% 50% / 0.35), 3px 0 hsl(180 100% 50% / 0.35)",
@@ -33,38 +30,11 @@ const GLITCH_STYLES: Record<string, React.CSSProperties> = {
   },
 };
 
-function HeroContent({ muted }: { muted?: boolean }) {
-  return (
-    <>
-      <p className="font-body text-[0.7rem] font-normal text-dim tracking-[0.35em] uppercase mb-8">
-        The March to Babylon
-      </p>
-      <h1
-        className="font-display font-light text-foreground tracking-[0.06em] uppercase m-0"
-        style={{ fontSize: "clamp(3rem, 8vw, 7rem)", lineHeight: 0.95 }}
-      >
-        G.L.
-        <br />
-        Shephard
-      </h1>
-      <p
-        className="font-display font-light italic text-body-muted max-w-[500px] mx-auto"
-        style={{ fontSize: "clamp(1rem, 2vw, 1.35rem)" }}
-      >
-        The books in the middle — where the storm is still deciding what it
-        will destroy.
-      </p>
-    </>
-  );
-}
-
 export default function Hero({ introMode = false, onComplete, skipReveal = false }: HeroProps) {
   const [revealRef, visible] = useReveal(0.1);
   const [glitch, setGlitch] = useState("");
   const [dissolve, setDissolve] = useState(false);
   const [hidden, setHidden] = useState(false);
-  const [ghostOpacity, setGhostOpacity] = useState(0);
-  const [ghostX, setGhostX] = useState(0);
 
   const stableOnComplete = useCallback(() => onComplete?.(), [onComplete]);
 
@@ -79,17 +49,10 @@ export default function Hero({ introMode = false, onComplete, skipReveal = false
     t(() => setGlitch("s2"), 830);
     t(() => setGlitch(""),   910);
 
-    // Second knock — ghost burns in at left position
-    t(() => {
-      setGlitch("s3");
-      setGhostX(-9);
-      setGhostOpacity(0.45);
-    }, 1090);
+    // Second knock
+    t(() => setGlitch("s3"), 1090);
     t(() => setGlitch("s4"), 1170);
-    t(() => {
-      setGlitch("");
-      setGhostOpacity(0);
-    }, 1250);
+    t(() => setGlitch(""),   1250);
 
     // Glitch dissolution
     t(() => setGlitch("g1"), 1600);
@@ -125,8 +88,7 @@ export default function Hero({ introMode = false, onComplete, skipReveal = false
 
   const isIntro = introMode;
   const showRevealAnim = !isIntro && !skipReveal;
-  const allStyles = { ...SHAKE_STYLES, ...GLITCH_STYLES };
-  const activeStyle = glitch ? (allStyles[glitch] ?? {}) : {};
+  const activeStyle = glitch ? (ALL_STYLES[glitch] ?? {}) : {};
 
   return (
     <div
@@ -137,66 +99,49 @@ export default function Hero({ introMode = false, onComplete, skipReveal = false
           : ""
       }`}
     >
-      {/*
-        Stack wrapper: CSS grid with a single cell so ghost and real layer
-        occupy identical space and align pixel-perfectly.
-      */}
-      <div style={{ display: "grid" }}>
+      <div
+        style={{
+          ...activeStyle,
+          opacity: dissolve ? 0 : 1,
+          filter: dissolve ? "blur(6px)" : "blur(0px)",
+          transition: dissolve
+            ? "opacity 600ms ease, filter 600ms ease"
+            : "transform 60ms steps(1, end), text-shadow 60ms steps(1, end)",
+        }}
+      >
+        <p className="font-body text-[0.7rem] font-normal text-dim tracking-[0.35em] uppercase mb-8">
+          The March to Babylon
+        </p>
 
-        {/* Ghost / afterimage layer */}
-        {introMode && (
-          <div
-            aria-hidden="true"
-            style={{
-              gridArea: "1 / 1",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              transform: `translateX(${ghostX}px)`,
-              opacity: ghostOpacity,
-              transition: "opacity 300ms ease-out",
-              pointerEvents: "none",
-              filter: "blur(0.5px) saturate(0.3) brightness(1.4)",
-              userSelect: "none",
-            }}
-          >
-            <HeroContent />
-          </div>
-        )}
-
-        {/* Real text layer */}
-        <div
-          style={{
-            gridArea: "1 / 1",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            ...activeStyle,
-            opacity: dissolve ? 0 : 1,
-            filter: dissolve ? "blur(6px)" : "blur(0px)",
-            transition: dissolve
-              ? "opacity 600ms ease, filter 600ms ease"
-              : "transform 60ms steps(1, end), text-shadow 60ms steps(1, end)",
-          }}
+        <h1
+          className="font-display font-light text-foreground tracking-[0.06em] uppercase m-0"
+          style={{ fontSize: "clamp(3rem, 8vw, 7rem)", lineHeight: 0.95 }}
         >
-          <HeroContent />
+          G.L.
+          <br />
+          Shephard
+        </h1>
 
-          <div
-            className={`mt-16 flex justify-center ${isIntro ? "invisible" : ""}`}
-            style={{ animation: isIntro ? "none" : "pulse-arrow 2.5s ease-in-out infinite" }}
-          >
-            <svg width="20" height="30" viewBox="0 0 20 30" fill="none">
-              <path
-                d="M10 0 L10 24 M3 17 L10 24 L17 17"
-                stroke="hsl(30, 7%, 27%)"
-                strokeWidth="1"
-              />
-            </svg>
-          </div>
+        <p
+          className="font-display font-light italic text-body-muted max-w-[500px] mx-auto"
+          style={{ fontSize: "clamp(1rem, 2vw, 1.35rem)" }}
+        >
+          The books in the middle — where the storm is still deciding what it
+          will destroy.
+        </p>
+
+        <div
+          className={`mt-16 flex justify-center ${isIntro ? "invisible" : ""}`}
+          style={{ animation: isIntro ? "none" : "pulse-arrow 2.5s ease-in-out infinite" }}
+        >
+          <svg width="20" height="30" viewBox="0 0 20 30" fill="none">
+            <path
+              d="M10 0 L10 24 M3 17 L10 24 L17 17"
+              stroke="hsl(30, 7%, 27%)"
+              strokeWidth="1"
+            />
+          </svg>
         </div>
-
       </div>
     </div>
   );
