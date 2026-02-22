@@ -4,6 +4,7 @@ import { useReveal } from "@/hooks/useReveal";
 interface HeroProps {
   introMode?: boolean;
   onComplete?: () => void;
+  skipReveal?: boolean;
 }
 
 const GLITCH_STYLES: Record<string, React.CSSProperties> = {
@@ -29,7 +30,7 @@ const GLITCH_STYLES: Record<string, React.CSSProperties> = {
   },
 };
 
-export default function Hero({ introMode = false, onComplete }: HeroProps) {
+export default function Hero({ introMode = false, onComplete, skipReveal = false }: HeroProps) {
   const [revealRef, visible] = useReveal(0.1);
   const [glitch, setGlitch] = useState("");
   const [dissolve, setDissolve] = useState(false);
@@ -84,12 +85,13 @@ export default function Hero({ introMode = false, onComplete }: HeroProps) {
   if (hidden && introMode) return null;
 
   const isIntro = introMode;
+  const showRevealAnim = !isIntro && !skipReveal;
 
   return (
     <div
-      ref={!isIntro ? (revealRef as React.RefObject<HTMLDivElement>) : undefined}
+      ref={showRevealAnim ? (revealRef as React.RefObject<HTMLDivElement>) : undefined}
       className={`min-h-screen flex flex-col items-center justify-center text-center px-8 ${
-        !isIntro
+        showRevealAnim
           ? `transition-opacity duration-[1200ms] ${visible ? "opacity-100" : "opacity-0"}`
           : ""
       }`}
