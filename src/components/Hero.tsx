@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useReveal } from "@/hooks/useReveal";
 
 interface HeroProps {
@@ -7,7 +7,6 @@ interface HeroProps {
   skipReveal?: boolean;
 }
 
-// Shake-only styles — pure X translation, no skew, no chromatic aberration
 const SHAKE_STYLES: Record<string, React.CSSProperties> = {
   s1: { transform: "translateX(-10px)" },
   s2: { transform: "translateX(10px)" },
@@ -15,7 +14,6 @@ const SHAKE_STYLES: Record<string, React.CSSProperties> = {
   s4: { transform: "translateX(9px)" },
 };
 
-// Glitch styles for the dissolution phase — chromatic aberration, slight skew
 const GLITCH_STYLES: Record<string, React.CSSProperties> = {
   g1: {
     transform: "translateX(4px)",
@@ -40,8 +38,6 @@ export default function Hero({ introMode = false, onComplete, skipReveal = false
   const [glitch, setGlitch] = useState("");
   const [dissolve, setDissolve] = useState(false);
   const [hidden, setHidden] = useState(false);
-
-  // Ghost state: opacity of the afterimage layer, and which X offset it was burned at
   const [ghostOpacity, setGhostOpacity] = useState(0);
   const [ghostX, setGhostX] = useState(0);
 
@@ -53,52 +49,36 @@ export default function Hero({ introMode = false, onComplete, skipReveal = false
     const ids: ReturnType<typeof setTimeout>[] = [];
     const t = (fn: () => void, ms: number) => ids.push(setTimeout(fn, ms));
 
-    // === SHAKE SEQUENCE ===
-    // 750ms of stillness, then two double-knock shakes
-
-    // First knock — left/right, no ghost
+    // First knock — left then right, no ghost
     t(() => setGlitch("s1"), 750);
     t(() => setGlitch("s2"), 830);
     t(() => setGlitch(""),   910);
 
-    // 180ms breath between knocks
-    // Second knock — left/right, WITH ghost burned at the left position
-    // Ghost: at the moment we snap right (s4), the previous left position burns in
+    // Second knock — with ghost burned at left position
     t(() => {
       setGlitch("s3");
-      // Burn in a ghost at the left offset (-9px) with full opacity
       setGhostX(-9);
       setGhostOpacity(0.45);
     }, 1090);
-    t(() => {
-      setGlitch("s4");
-      // Real text has snapped right — ghost at left begins decaying
-      // (CSS transition on ghostOpacity handles the decay)
-    }, 1170);
+    t(() => setGlitch("s4"), 1170);
     t(() => {
       setGlitch("");
-      // Text returns to center — ghost continues fading out via CSS
+      // Begin ghost decay — CSS transition handles the fade
+      setGhostOpacity(0);
     }, 1250);
 
-    // Ghost fully gone by ~1550ms (300ms decay from 1250)
-
-    // === 200ms BREATH before glitch dissolution begins ===
-
-    // First stutter
+    // Glitch dissolution phase
     t(() => setGlitch("g1"), 1600);
     t(() => setGlitch(""),   1640);
     t(() => setGlitch("g2"), 1700);
     t(() => setGlitch(""),   1750);
 
-    // Third stutter
     t(() => setGlitch("g3"), 1875);
     t(() => setGlitch(""),   1925);
 
-    // Pause... then one more
     t(() => setGlitch("g4"), 2175);
     t(() => setGlitch(""),   2215);
 
-    // Accelerate
     t(() => setGlitch("g1"), 2275);
     t(() => setGlitch(""),   2305);
     t(() => setGlitch("g3"), 2330);
@@ -107,13 +87,11 @@ export default function Hero({ introMode = false, onComplete, skipReveal = false
     t(() => setGlitch("g4"), 2400);
     t(() => setGlitch("g1"), 2420);
 
-    // Dissolve
     t(() => {
       setGlitch("");
       setDissolve(true);
     }, 2450);
 
-    // Complete
     t(() => {
       setHidden(true);
       stableOnComplete();
@@ -126,10 +104,8 @@ export default function Hero({ introMode = false, onComplete, skipReveal = false
 
   const isIntro = introMode;
   const showRevealAnim = !isIntro && !skipReveal;
-
-  const activeStyle = glitch
-    ? ({ ...SHAKE_STYLES, ...GLITCH_STYLES }[glitch] ?? {})
-    : {};
+  const allStyles = { ...SHAKE_STYLES, ...GLITCH_STYLES };
+  const activeStyle = glitch ? (allStyles[glitch] ?? {}) : {};
 
   return (
     <div
@@ -140,31 +116,31 @@ export default function Hero({ introMode = false, onComplete, skipReveal = false
           : ""
       }`}
     >
-      {/* Ghost / afterimage layer — absolutely positioned, renders beneath real text,
-          visible only during the second shake's afterimage moment.
-          Uses the same text content as the real layer so it overlaps perfectly.
-          Pointer-events none so it never interferes with interaction. */}
+      {/* Ghost afterimage layer — only mounted during introMode */}
       {introMode && (
         <div
           aria-hidden="true"
           style={{
             position: "absolute",
-            inset: 0,
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            textAlign: "center",
-            pointerEvents: "none",
-            opacity: ghostOpacity,
             transform: `translateX(${ghostX}px)`,
+            opacity: ghostOpacity,
             transition: "opacity 300ms ease-out",
+            pointerEvents: "none",
+            filter: "blur(0.5px) saturate(0.3) brightness(1.4)",
+            userSelect: "none",
           }}
         >
           <p className="font-body text-[0.7rem] font-normal text-dim tracking-[0.35em] uppercase mb-8">
             The March to Babylon
           </p>
-
           <h1
             className="font-display font-light text-foreground tracking-[0.06em] uppercase m-0"
             style={{ fontSize: "clamp(3rem, 8vw, 7rem)", lineHeight: 0.95 }}
@@ -173,7 +149,6 @@ export default function Hero({ introMode = false, onComplete, skipReveal = false
             <br />
             Shephard
           </h1>
-
           <p
             className="font-display font-light italic text-body-muted max-w-[500px] mx-auto"
             style={{ fontSize: "clamp(1rem, 2vw, 1.35rem)" }}
@@ -216,7 +191,6 @@ export default function Hero({ introMode = false, onComplete, skipReveal = false
           will destroy.
         </p>
 
-        {/* Down arrow — always rendered for consistent centering, hidden in intro */}
         <div
           className={`mt-16 flex justify-center ${isIntro ? "invisible" : ""}`}
           style={{ animation: isIntro ? "none" : "pulse-arrow 2.5s ease-in-out infinite" }}
