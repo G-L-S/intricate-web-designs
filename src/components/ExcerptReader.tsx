@@ -211,23 +211,13 @@ export default function ExcerptReader({ open, onClose }: ExcerptReaderProps) {
           style={{ height: `${progress * 100}%`, backgroundColor: "#c4a35a", transition: "height 80ms linear" }}
         />
 
-        {/* Close button */}
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-5 z-30 font-body text-[0.65rem] tracking-[0.15em] uppercase cursor-pointer border-none bg-transparent transition-opacity duration-300"
-          style={{ color: "#8a8279", opacity: 0.4 }}
-          onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.9")}
-          onMouseLeave={(e) => (e.currentTarget.style.opacity = "0.4")}
-        >
-          close
-        </button>
-
-        {/* Chapter navigation */}
+        {/* Chapter navigation + close */}
         <div
-          className="flex gap-1 px-4 py-3 border-b overflow-x-auto"
+          className="flex items-center gap-1 px-4 py-3 border-b overflow-x-auto"
           style={{
             backgroundColor: "#eae4d8",
             borderColor: "#d9d2c4",
+            borderRadius: "2px 2px 0 0",
             scrollbarWidth: "none",
             msOverflowStyle: "none",
           }}
@@ -246,6 +236,15 @@ export default function ExcerptReader({ open, onClose }: ExcerptReaderProps) {
               {ch.shortTitle}
             </button>
           ))}
+          <button
+            onClick={onClose}
+            className="ml-auto font-body whitespace-nowrap text-[0.65rem] tracking-[0.15em] uppercase cursor-pointer border-none bg-transparent transition-opacity duration-300 pl-4"
+            style={{ color: "#8a8279", opacity: 0.5 }}
+            onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.9")}
+            onMouseLeave={(e) => (e.currentTarget.style.opacity = "0.5")}
+          >
+            close
+          </button>
         </div>
 
         {/* Scrollable content */}
