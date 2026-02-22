@@ -7,32 +7,33 @@ interface HeroProps {
   skipReveal?: boolean;
 }
 
+const SHAKE_STYLES: Record<string, React.CSSProperties> = {
+  left: { transform: "translateX(-9px)" },
+  right: { transform: "translateX(9px)" },
+};
+
 const GLITCH_STYLES: Record<string, React.CSSProperties> = {
   g1: {
-    transform: "translateX(4px) skewX(-0.5deg)",
-    textShadow:
-      "-3px 0 hsl(0 100% 50% / 0.35), 3px 0 hsl(180 100% 50% / 0.35)",
+    transform: "translateX(4px)",
+    textShadow: "-3px 0 hsl(0 100% 50% / 0.35), 3px 0 hsl(180 100% 50% / 0.35)",
   },
   g2: {
-    transform: "translateX(-5px) skewX(0.3deg)",
-    textShadow:
-      "2px 0 hsl(0 100% 50% / 0.3), -2px 0 hsl(180 100% 50% / 0.3)",
+    transform: "translateX(-5px)",
+    textShadow: "2px 0 hsl(0 100% 50% / 0.3), -2px 0 hsl(180 100% 50% / 0.3)",
   },
   g3: {
-    transform: "translateX(3px) skewX(-0.2deg)",
-    textShadow:
-      "-2px 0 hsl(0 100% 50% / 0.4), 3px 0 hsl(180 100% 50% / 0.25)",
+    transform: "translateX(3px)",
+    textShadow: "-2px 0 hsl(0 100% 50% / 0.4), 3px 0 hsl(180 100% 50% / 0.25)",
   },
   g4: {
-    transform: "translateX(-2px) skewX(0.4deg)",
-    textShadow:
-      "3px 0 hsl(0 100% 50% / 0.3), -3px 0 hsl(180 100% 50% / 0.35)",
+    transform: "translateX(-2px)",
+    textShadow: "3px 0 hsl(0 100% 50% / 0.3), -3px 0 hsl(180 100% 50% / 0.35)",
   },
 };
 
 export default function Hero({ introMode = false, onComplete, skipReveal = false }: HeroProps) {
   const [revealRef, visible] = useReveal(0.1);
-  const [glitch, setGlitch] = useState("");
+  const [activeStyle, setActiveStyle] = useState<React.CSSProperties>({});
   const [dissolve, setDissolve] = useState(false);
   const [hidden, setHidden] = useState(false);
 
@@ -44,40 +45,43 @@ export default function Hero({ introMode = false, onComplete, skipReveal = false
     const ids: ReturnType<typeof setTimeout>[] = [];
     const t = (fn: () => void, ms: number) => ids.push(setTimeout(fn, ms));
 
-    // Two quick stutters
-    t(() => setGlitch("g1"), 1700);
-    t(() => setGlitch(""), 1740);
-    t(() => setGlitch("g2"), 1800);
-    t(() => setGlitch(""), 1850);
+    // ~500ms stillness, then two firm knocks
+    t(() => setActiveStyle(SHAKE_STYLES.left), 500);
+    t(() => setActiveStyle({}), 580);
+    t(() => setActiveStyle(SHAKE_STYLES.right), 620);
+    t(() => setActiveStyle({}), 700);
 
-    // Third stutter
-    t(() => setGlitch("g3"), 1975);
-    t(() => setGlitch(""), 2025);
+    // 200ms pause, then glitch acceleration at ~900ms
+    t(() => setActiveStyle(GLITCH_STYLES.g1), 900);
+    t(() => setActiveStyle({}), 940);
+    t(() => setActiveStyle(GLITCH_STYLES.g2), 1000);
+    t(() => setActiveStyle({}), 1050);
 
-    // Pause... then one more
-    t(() => setGlitch("g4"), 2275);
-    t(() => setGlitch(""), 2315);
+    t(() => setActiveStyle(GLITCH_STYLES.g3), 1175);
+    t(() => setActiveStyle({}), 1225);
+
+    t(() => setActiveStyle(GLITCH_STYLES.g4), 1475);
+    t(() => setActiveStyle({}), 1515);
 
     // Accelerate
-    t(() => setGlitch("g1"), 2375);
-    t(() => setGlitch(""), 2405);
-    t(() => setGlitch("g3"), 2430);
-    t(() => setGlitch(""), 2460);
-    t(() => setGlitch("g2"), 2480);
-    t(() => setGlitch("g4"), 2500);
-    t(() => setGlitch("g1"), 2520);
+    t(() => setActiveStyle(GLITCH_STYLES.g1), 1575);
+    t(() => setActiveStyle({}), 1605);
+    t(() => setActiveStyle(GLITCH_STYLES.g3), 1630);
+    t(() => setActiveStyle({}), 1660);
+    t(() => setActiveStyle(GLITCH_STYLES.g2), 1680);
+    t(() => setActiveStyle(GLITCH_STYLES.g4), 1700);
+    t(() => setActiveStyle(GLITCH_STYLES.g1), 1720);
 
     // Dissolve
     t(() => {
-      setGlitch("");
+      setActiveStyle({});
       setDissolve(true);
-    }, 2550);
+    }, 1750);
 
-    // Complete after dissolution
     t(() => {
       setHidden(true);
       stableOnComplete();
-    }, 3150);
+    }, 2350);
 
     return () => ids.forEach(clearTimeout);
   }, [introMode, stableOnComplete]);
@@ -98,7 +102,7 @@ export default function Hero({ introMode = false, onComplete, skipReveal = false
     >
       <div
         style={{
-          ...(glitch ? GLITCH_STYLES[glitch] : {}),
+          ...activeStyle,
           opacity: dissolve ? 0 : 1,
           filter: dissolve ? "blur(6px)" : "blur(0px)",
           transition: dissolve
