@@ -28,13 +28,21 @@ const Index = () => {
         <SizzleReel onComplete={handleSizzleDone} />
       )}
 
+      {/* Hero always in normal flow once intro is done */}
+      {phase !== "intro" && (
+        <div className={`transition-opacity duration-1000 delay-200 ${
+          phase === "main" ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}>
+          <Hero skipReveal />
+        </div>
+      )}
+
       <div
         className={`transition-opacity duration-1000 delay-200 ${
           phase === "main" ? "opacity-100" : "opacity-0 pointer-events-none fixed inset-0"
         }`}
       >
         <NavBar visible={phase === "main"} />
-        {phase !== "intro" && <Hero skipReveal />}
         <Pitch />
         <BookShowcase />
         <About />
