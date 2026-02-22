@@ -15,7 +15,7 @@ export default function Section({ id, children, className = "" }: SectionProps) 
       ref={ref as React.RefObject<HTMLElement>}
       id={id}
       className={`transition-all duration-[900ms] ease-out ${
-        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
       } ${className}`}
     >
       {children}
